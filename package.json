@@ -1,0 +1,16 @@
+{
+	"name": "com.cratesmith.asseticons",
+	"displayName": "Cratesmith.AssetIcons",
+	"description": "A workflow for using asset icons on scripts and prefabs in Unity3d",
+	"version": "0.0.1-develop",
+	"unity": "2018.3",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Cratesmith/Cratesmith.AssetIcons.git"
+	},
+	"src": "Packages/Cratesmith.Utils",
+	"author": "Kieran Lord <cratesmith@cratesmith.com> (https://github.com/cratesmith)",
+	"dependencies": {
+	}
+}
