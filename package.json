@@ -9,7 +9,7 @@
 		"type": "git",
 		"url": "git+https://github.com/Cratesmith/Cratesmith.AssetIcons.git"
 	},
-	"src": "Packages/Cratesmith.Utils",
+	"src": "Packages/Cratesmith.AssetIcons",
 	"author": "Kieran Lord <cratesmith@cratesmith.com> (https://github.com/cratesmith)",
 	"dependencies": {
 	}
