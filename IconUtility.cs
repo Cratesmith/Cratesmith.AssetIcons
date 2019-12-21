@@ -88,25 +88,31 @@ namespace Cratesmith.AssetIcons
         [InitializeOnLoadMethod]
         private static void DoStartup()
         {
-            if (!EditorApplication.isPlayingOrWillChangePlaymode && !BuildPipeline.isBuildingPlayer)
+            if (EditorApplication.isPlayingOrWillChangePlaymode || BuildPipeline.isBuildingPlayer) return;
+            if (EditorApplication.timeSinceStartup > 5f) return;
+            
+#if AUTOICONS_LOGGING
+            Debug.Log($"ICON DOSTARTUP T={EditorApplication.timeSinceStartup}");
+#endif
+            EditorPrefs.SetBool("IconUtility.scriptsChanged", false);
+            
+            if (!EditorApplication.isCompiling)
             {
-                EditorPrefs.SetBool("IconUtility.scriptsChanged", EditorApplication.isCompiling);
-                if (!EditorApplication.isCompiling)
-                {
-                    AssignIconsToScripts();	
-                    AssignIconsToPrefabs();
-                }
+                AssignIconsToScripts();	
+                AssignIconsToPrefabs();
             }
         }
 
         [DidReloadScripts]
-        private static void UpdateIfDirty()
+        private static void DoReloadScripts()
         {
             if (BuildPipeline.isBuildingPlayer)
             {
                 return;
             }
-
+#if AUTOICONS_LOGGING
+            Debug.Log("ICON DORELOAD");
+#endif
             var scriptsChanged = EditorPrefs.GetBool("IconUtility.scriptsChanged", false);
             if (scriptsChanged)
             {
@@ -259,12 +265,9 @@ namespace Cratesmith.AssetIcons
                 // no icon for this type (ours or otherwise)
                 if (type == null)
                 {
-                    Editor_SetIcon(script, null);		        
+                    Editor_SetIcon(script, null, false);		        
                 }
             }
-
-            // we may need to update prefabs
-            AssignIconsToPrefabs();
         }    
 
         static string TrimGenericsFromType(string name)
@@ -406,12 +409,18 @@ namespace Cratesmith.AssetIcons
         }
 #endif 
 
-        public static void Editor_SetIcon(Object forObject, Texture2D iconTexture)
+        public static void Editor_SetIcon(Object forObject, Texture2D iconTexture, bool allowTriggerRecompile=true)
         {
+            var prevIcon = Editor_GetIcon(forObject);
+            if (prevIcon == iconTexture)
+            {
+                return;
+            }
+            
             var mi2 = typeof(EditorGUIUtility).GetMethod("SetIconForObject", BindingFlags.NonPublic | BindingFlags.Static);
             mi2.Invoke(null, new object[] { forObject, iconTexture });
 
-            if (forObject is MonoScript script)
+            if (allowTriggerRecompile && forObject is MonoScript script)
             {
                 var mi3 = typeof(MonoImporter).GetMethod("CopyMonoScriptIconToImporters", BindingFlags.NonPublic | BindingFlags.Static);
                 mi3.Invoke(null, new object[] {script});
