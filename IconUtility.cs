@@ -1,6 +1,9 @@
 //#define AUTOICONS_LOGGING
 #define AUTOICONS_ENABLED
 
+// TODO: change asset importer to save what may have changed into EditorPrefs
+// TODO: fix possibly not updating all prefabs if a script recompile interrupts them
+
 #if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
