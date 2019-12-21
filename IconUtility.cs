@@ -1,6 +1,8 @@
 //#define AUTOICONS_LOGGING
 #define AUTOICONS_ENABLED
 
+// TODO: AutoIcons not updating correctly if auto-refresh is not turned on. Can take several refreshes of the changed file to take effect.
+
 #if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
