@@ -25,7 +25,11 @@ namespace Cratesmith.AssetIcons
         private static readonly string[] s_iconCategories = new[] {"ios7", "win8", "win10", "android", "androidL", "color", "office"};
      
 
-        MonoScript currentScript { get { return Selection.activeObject as MonoScript; }}
+        static MonoScript currentScript { get { return Selection.activeObject as MonoScript; }}
+
+        private const string MENUITEM_WINDOW_STRING = "Window/Download Icons...";
+        private const string MENUITEM_ASSETS_STRING = "Assets/Download Script Icon...";
+        private const string MENUITEM_CONTEXT_STRING = "CONTEXT/MonoScript/Download Script Icon...";
 
         [SerializeField] private string m_searchName = "";
         [SerializeField] private SearchField         m_searchField;
@@ -38,8 +42,22 @@ namespace Cratesmith.AssetIcons
         [SerializeField] bool m_showCategories;
         private string m_errorString;
 
-        [MenuItem("Window/Download Icons...")]
-        public static void ShowAquireIconWindow()
+        [MenuItem(MENUITEM_CONTEXT_STRING, false)]
+        static void ContextShowAcquireIconWindow(MenuCommand command)
+        {
+            Selection.activeObject = command.context;
+            ShowAcquireIconWindow();
+        }
+
+        [MenuItem(MENUITEM_ASSETS_STRING, true)]
+        static bool _ShowAcquireIconWindow()
+        {
+            return currentScript;
+        }
+        
+        [MenuItem(MENUITEM_ASSETS_STRING, false)]
+        [MenuItem(MENUITEM_WINDOW_STRING)]
+        public static void ShowAcquireIconWindow()
         {
             var window = GetWindow<DownloadIconWindow>();
             window.Init(Selection.activeObject as MonoScript);

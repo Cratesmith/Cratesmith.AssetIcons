@@ -1,8 +1,6 @@
 //#define AUTOICONS_LOGGING
 #define AUTOICONS_ENABLED
 
-// TODO: AutoIcons not updating correctly if auto-refresh is not turned on. Can take several refreshes of the changed file to take effect.
-
 #if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
@@ -24,7 +22,7 @@ namespace Cratesmith.AssetIcons
         private static Queue<string> s_prefabGuids;
         private static HashSet<string> s_iconScriptPaths = new HashSet<string>();
         private static MonoScript[] s_prefabIconTypes;
-
+        
         private static MonoScript[] PrefabIconTypes
         {
             get
@@ -95,7 +93,8 @@ namespace Cratesmith.AssetIcons
                 EditorPrefs.SetBool("IconUtility.scriptsChanged", EditorApplication.isCompiling);
                 if (!EditorApplication.isCompiling)
                 {
-                    AssignIconsToScripts();				
+                    AssignIconsToScripts();	
+                    AssignIconsToPrefabs();
                 }
             }
         }
@@ -112,6 +111,7 @@ namespace Cratesmith.AssetIcons
             if (scriptsChanged)
             {
                 AssignIconsToScripts();
+                AssignIconsToPrefabs();
             }
         }
 
