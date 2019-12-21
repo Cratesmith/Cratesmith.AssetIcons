@@ -408,9 +408,14 @@ namespace Cratesmith.AssetIcons
 
         public static void Editor_SetIcon(Object forObject, Texture2D iconTexture)
         {
-            var ty = typeof(EditorGUIUtility);
-            var mi2 = ty.GetMethod("SetIconForObject", BindingFlags.NonPublic | BindingFlags.Static);
-            mi2.Invoke(null, new object[] { forObject, iconTexture });               
+            var mi2 = typeof(EditorGUIUtility).GetMethod("SetIconForObject", BindingFlags.NonPublic | BindingFlags.Static);
+            mi2.Invoke(null, new object[] { forObject, iconTexture });
+
+            if (forObject is MonoScript script)
+            {
+                var mi3 = typeof(MonoImporter).GetMethod("CopyMonoScriptIconToImporters", BindingFlags.NonPublic | BindingFlags.Static);
+                mi3.Invoke(null, new object[] {script});
+            }
         }
 
         public static Texture2D Editor_GetIcon(Object forObject)
