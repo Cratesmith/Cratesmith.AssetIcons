@@ -139,8 +139,16 @@ namespace Cratesmith.AssetIcons
                 int current = 0;
                 while (current < m_textures.Count)
                 {
+#if UNITY_2017_3_OR_NEWER
+                    var buttonWidth = 48;
+                    var buttonHeight = 48;
+                    var edgeOffset = -64;
+#else
                     var buttonWidth = 32;
                     var buttonHeight = 32;
+                    var edgeOffset = 22;
+#endif
+
                     int x = 0;
 
                     using (new GUILayout.HorizontalScope())
@@ -148,8 +156,15 @@ namespace Cratesmith.AssetIcons
                         {
                             if (current >= m_textures.Count) break;
 
-                            using (new GUILayout.VerticalScope("groupBackground", GUILayout.Width(buttonWidth), GUILayout.Height(buttonHeight)))
-                                if (GUILayout.Button(m_textures[current], "IconButton", GUILayout.Width(buttonWidth), GUILayout.Height(buttonHeight), GUILayout.ExpandHeight(false)))
+#if UNITY_2017_3_OR_NEWER
+                            var groupStyle = "groupBackground";
+                            var iconStyle = "DD HeaderStyle";
+#else
+                            var groupStyle = "groupBackground";
+                            var iconStyle = "IconButton";
+#endif
+                            using (new GUILayout.VerticalScope(groupStyle, GUILayout.Width(buttonWidth), GUILayout.Height(buttonHeight)))
+                                if (GUILayout.Button(m_textures[current], iconStyle, GUILayout.Width(buttonWidth), GUILayout.Height(buttonHeight), GUILayout.ExpandHeight(false)))
                                 {
                                     AssignIconToScript(m_textures[current]);
                                 }
@@ -157,7 +172,7 @@ namespace Cratesmith.AssetIcons
                               
                             x += buttonWidth + 10;
                             ++current;
-                        } while (x + buttonWidth < Screen.width - 22);
+                        } while (x + buttonWidth < Screen.width - edgeOffset);
                     GUILayout.Space(2);
                 }
                 GUI.enabled = true;

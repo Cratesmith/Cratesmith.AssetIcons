@@ -2,7 +2,7 @@
 	"name": "com.cratesmith.asseticons",
 	"displayName": "Cratesmith.AssetIcons",
 	"description": "A workflow for using asset icons on scripts and prefabs in Unity3d",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"unity": "2018.3",
 	"license": "MIT",
 	"repository": {
